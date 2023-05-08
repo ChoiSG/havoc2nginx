@@ -1,0 +1,72 @@
+Teamserver {
+	Host = "0.0.0.0"
+	Port = 40056
+
+	Build {
+	    Compiler64 = "data/x86_64-w64-mingw32-cross/bin/x86_64-w64-mingw32-gcc"
+	    Nasm = "/usr/bin/nasm"
+	}
+}
+
+Operators {
+	user "5pider" {
+		Password = "password1234"
+	}
+
+	user "Neo" {
+		Password = "password1234"
+	}
+}
+
+# this is optional. if you dont use it you can remove it.
+Service {
+    Endpoint = "service-endpoint"
+    Password = "service-password"
+}
+
+Demon {
+    Sleep = 2
+    Jitter = 15
+
+    TrustXForwardedFor = false
+
+    Injection {
+        Spawn64 = "C:\\Windows\\System32\\notepad.exe"
+        Spawn32 = "C:\\Windows\\SysWOW64\\notepad.exe"
+    }
+}
+
+Listeners {
+    Http {
+        Name         = "HTTPS Listener"
+        Hosts        = ["blog.example.com"]
+        HostBind     = "0.0.0.0"
+        HostRotation = "round-robin"
+        PortBind     = 443
+        PortConn     = 443
+        Secure       = true
+        UserAgent    = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"
+        Uris         = [
+            "/redteamplaybook.gif",
+            "/index.php",
+            "/grootsecurity.txt",
+            "/index.js"
+        ]
+        Headers      = [
+            "X-RTP-Version: Prod",
+            "X-HTTP-Client: true",
+        ]
+
+        Response {
+            Headers  = [
+                "Content-type: text/plain",
+                "X-Powered-By: ASP.NET",
+            ]
+        }
+
+        Cert {
+            Cert = "/root/grootredteam/fullchain.pem"
+            Key = "/root/grootredteam/privkey.pem"
+        }
+    }
+}
